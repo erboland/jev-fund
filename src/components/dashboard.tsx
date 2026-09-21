@@ -14,19 +14,34 @@ import type { FundSnapshot } from "@/lib/types";
 
 type Conn = "connecting" | "live" | "error";
 
-export function Dashboard({ initial }: { initial: FundSnapshot }) {
-  const [snapshot, setSnapshot] = useState<FundSnapshot>(initial);
-  const [connection, setConnection] = useState<Conn>("live");
-  const [error, setError] = useState<string | null>(null);
+async function loadFund(): Promise<FundSnapshot> {
+  const res = await fetch("/api/fund", { cache: "no-store" });
+  const body = (await res.json()) as FundSnapshot & { error?: string };
+  if (!res.ok) {
+    throw new Error(body.error ?? `Yahoo feed ${res.status}`);
+  }
+  return body;
+}
+
+export function Dashboard({
+  initial,
+  bootError,
+}: {
+  initial: FundSnapshot | null;
+  bootError?: string;
+}) {
+  const [snapshot, setSnapshot] = useState<FundSnapshot | null>(initial);
+  const [connection, setConnection] = useState<Conn>(
+    initial ? "live" : bootError ? "error" : "connecting"
+  );
+  const [error, setError] = useState<string | null>(bootError ?? null);
 
   useEffect(() => {
     let cancelled = false;
 
     async function refresh() {
       try {
-        const res = await fetch("/api/fund", { cache: "no-store" });
-        if (!res.ok) throw new Error(`Fund feed ${res.status}`);
-        const data = (await res.json()) as FundSnapshot;
+        const data = await loadFund();
         if (cancelled) return;
         setSnapshot(data);
         setConnection("live");
@@ -34,7 +49,7 @@ export function Dashboard({ initial }: { initial: FundSnapshot }) {
       } catch (err) {
         if (cancelled) return;
         setConnection("error");
-        setError(err instanceof Error ? err.message : "Could not load the fund");
+        setError(err instanceof Error ? err.message : "Could not load Yahoo quotes");
       }
     }
 
@@ -48,22 +63,21 @@ export function Dashboard({ initial }: { initial: FundSnapshot }) {
   return (
     <div className="card flex min-h-[calc(100vh-32px)] flex-col">
       <FundHeader snapshot={snapshot} connection={connection} />
-      <StatsRow snapshot={snapshot} />
+      {snapshot ? <StatsRow snapshot={snapshot} /> : null}
       {error ? (
         <div className="flex items-center justify-between gap-3 border-b px-4 py-2 text-sm">
-          <span className="text-sell">{error} — showing last book</span>
+          <span className="text-sell">
+            {error}
+            {snapshot ? " — showing last book" : ""}
+          </span>
           <Button
             type="button"
             size="sm"
             variant="outline"
             onClick={() => {
               setConnection("connecting");
-              fetch("/api/fund", { cache: "no-store" })
-                .then((res) => {
-                  if (!res.ok) throw new Error(`Fund feed ${res.status}`);
-                  return res.json();
-                })
-                .then((data: FundSnapshot) => {
+              loadFund()
+                .then((data) => {
                   setSnapshot(data);
                   setConnection("live");
                   setError(null);
@@ -71,21 +85,27 @@ export function Dashboard({ initial }: { initial: FundSnapshot }) {
                 .catch((err: unknown) => {
                   setConnection("error");
                   setError(
-                    err instanceof Error ? err.message : "Could not load the fund"
+                    err instanceof Error ? err.message : "Could not load Yahoo quotes"
                   );
                 });
             }}
           >
-            Retry feed
+            Retry quotes
           </Button>
         </div>
       ) : null}
-      <div className="grid flex-1 gap-6 p-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)] lg:p-5">
-        <EquityChart equity={snapshot.equity} />
-        <DecisionPanel latest={snapshot.latestDecision} />
-        <HoldingsTable holdings={snapshot.holdings} />
-        <TradesPanel trades={snapshot.trades} decisions={snapshot.decisions} />
-      </div>
+      {snapshot ? (
+        <div className="grid flex-1 gap-6 p-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)] lg:p-5">
+          <EquityChart equity={snapshot.equity} />
+          <DecisionPanel latest={snapshot.latestDecision} />
+          <HoldingsTable holdings={snapshot.holdings} />
+          <TradesPanel trades={snapshot.trades} decisions={snapshot.decisions} />
+        </div>
+      ) : (
+        <div className="flex flex-1 items-center justify-center p-8 text-sm text-muted-foreground">
+          Loading Yahoo prints for the paper book…
+        </div>
+      )}
       <PromoFooter />
     </div>
   );

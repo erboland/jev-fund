@@ -24,6 +24,9 @@ export function FundHeader({
         <Badge variant="outline" className="font-mono text-[11px] uppercase">
           paper
         </Badge>
+        <Badge variant="outline" className="font-mono text-[11px] uppercase">
+          {snapshot?.dataSource === "fixture" ? "fixture" : "yahoo"}
+        </Badge>
         <Badge
           variant="secondary"
           className={cn(
@@ -43,15 +46,15 @@ export function FundHeader({
             )}
           />
           {connection === "live"
-            ? "live dry run"
+            ? "yahoo last print"
             : connection === "connecting"
               ? "connecting"
-              : "feed error"}
+              : "quote error"}
         </span>
       </div>
       <p className="max-w-xl text-sm text-muted-foreground">
-        One Jev (or mock) decision per tick on a $100k long-only book. Holdings,
-        buys, and losses in public.
+        Real Yahoo prices on a $100k long-only paper book. Holdings, buys, and
+        losses in public.
       </p>
     </header>
   );

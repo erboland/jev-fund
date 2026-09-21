@@ -43,7 +43,7 @@ export function EquityChart({
           Equity
         </h2>
         <span className="font-mono text-[11px] text-muted-foreground">
-          start {formatUsd(STARTING_CASH, true)}
+          start {formatUsd(STARTING_CASH, true)} · Yahoo closes
         </span>
       </div>
       <svg
