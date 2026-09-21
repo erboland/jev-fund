@@ -3,7 +3,7 @@
   <g font-family="ui-sans-serif, system-ui, Helvetica, Arial" font-size="14">
     <rect x="24" y="58" width="180" height="88" rx="14" fill="#fff" stroke="#D8D0C4"/>
     <text x="114" y="96" text-anchor="middle" font-weight="700" fill="#0F1F17">Market path</text>
-    <text x="114" y="116" text-anchor="middle" fill="#6B7A70">seeded prices</text>
+    <text x="114" y="116" text-anchor="middle" fill="#6B7A70">Yahoo prints</text>
 
     <rect x="268" y="58" width="180" height="88" rx="14" fill="#fff" stroke="#D8D0C4"/>
     <text x="358" y="96" text-anchor="middle" font-weight="700" fill="#0F1F17">Jev / mock</text>

@@ -7,8 +7,8 @@ By using this software you agree:
 - It is for **educational and research purposes only**
 - It is **not** intended for real trading or investment
 - It provides **no** investment advice, solicitation, or performance guarantee
-- Prices and fills are **simulated**. Losses are shown on purpose
-- Past (simulated) returns do not indicate future results
+- Prices come from **Yahoo Finance** (typically delayed). Fills are **paper only** — losses are shown on purpose
+- Past paper P&L on Yahoo prints does not indicate future results
 - The authors assume **no liability** for financial losses
 - Consult a licensed advisor before investing real capital
 
