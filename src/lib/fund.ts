@@ -108,7 +108,7 @@ export function execute(
   const nav = mkt.nav;
 
   if (decision.action === "hold") {
-    return { trade: null, note: "no edge \u2014 hold", executed: false };
+    return { trade: null, note: "no edge — hold", executed: false };
   }
 
   if (decision.action === "buy") {
@@ -116,7 +116,7 @@ export function execute(
     const budget = Math.min(state.cash * 0.98, nav * BUY_WEIGHT, room);
     const shares = Math.floor((budget / price) * 100) / 100;
     if (shares * price < 25) {
-      return { trade: null, note: "size too small \u2014 hold", executed: false };
+      return { trade: null, note: "size too small — hold", executed: false };
     }
     const trade: Trade = {
       id: state.nextTradeId++,
@@ -141,7 +141,7 @@ export function execute(
   const shares =
     Math.ceil(mkt.positionShares * fraction * 100) / 100 || mkt.positionShares;
   if (shares <= 0) {
-    return { trade: null, note: "flat \u2014 cannot sell", executed: false };
+    return { trade: null, note: "flat — cannot sell", executed: false };
   }
   const trade: Trade = {
     id: state.nextTradeId++,
@@ -245,6 +245,7 @@ export async function stepEngineAsync(
     return state;
   }
   const decision = await decide(mkt, state.tick);
+  // Keep asking Jev every tick. Do not open another fill while the print is unchanged.
   const skipFill = flat && decision.action !== "hold";
   finishTick(state, mkt, decision, flat ? "print unchanged" : undefined, skipFill);
   return state;
@@ -352,9 +353,10 @@ export function snapshotOf(state: EngineState): FundSnapshot {
   const nav = navOf(state);
   const unrealizedPnl = holdings.reduce((s, h) => s + h.unrealizedPnl, 0);
   const pnl = nav - STARTING_CASH;
+  const configured = jevConfigured();
   return {
-    model: state.modelName,
-    jevConfigured: false,
+    model: configured ? "jev" : state.modelName,
+    jevConfigured: configured,
     dryRun: true,
     dataSource: state.dataSource,
     quoteTs: state.quoteTs,
