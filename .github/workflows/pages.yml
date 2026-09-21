@@ -17,6 +17,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  demo-gif:
+    if: ${{ hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64') != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Write the demo recording
+        run: |
+          set -eu
+          base64 -d docs/assets/demo.gif.b64 > docs/assets/demo.gif
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git rm -f docs/assets/demo.gif.b64
+          git add docs/assets/demo.gif
+          git commit -m "Add the demo recording"
+          git push origin HEAD:main
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -43,6 +63,29 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Enable GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          api="https://api.github.com/repos/${{ github.repository }}/pages"
+          auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+          code=$(curl -sS -o /tmp/pages-create.json -w "%{http_code}" -X POST "${auth[@]}" "$api" -d '{"build_type":"workflow"}')
+          echo "pages create HTTP ${code}"
+          if [ "$code" = "201" ]; then
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/pages-update.json -w "%{http_code}" -X PUT "${auth[@]}" "$api" -d '{"build_type":"workflow"}')
+          echo "pages update HTTP ${code}"
+          if [ "$code" = "200" ] || [ "$code" = "201" ]; then
+            exit 0
+          fi
+          echo "GitHub Pages is still off. Create response:"
+          cat /tmp/pages-create.json
+          echo
+          echo "Update response:"
+          cat /tmp/pages-update.json
+          exit 1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

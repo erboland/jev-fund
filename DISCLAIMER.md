@@ -13,5 +13,3 @@ By using this software you agree:
 - Consult a licensed advisor before investing real capital
 
 Do not connect a brokerage, wallet, or private key to this repository.
-
-This is the same category of disclaimer used by other open-source quant research projects such as [virattt/ai-hedge-fund](https://github.com/virattt/ai-hedge-fund) and [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents).

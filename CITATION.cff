@@ -5,7 +5,6 @@ type: software
 authors:
   - family-names: Karshyga
     given-names: Yerbol
-    email: karshigaerbol@gmail.com
 repository-code: "https://github.com/erboland/jev-fund"
 url: "https://github.com/erboland/jev-fund"
 abstract: "Open-source paper hedge fund. Jev (or a mock stand-in) decides buy, sell, or hold. The demo shows holdings, buys, and losses in public."
