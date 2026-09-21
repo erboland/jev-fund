@@ -3,9 +3,6 @@ export type Action = "buy" | "sell" | "hold";
 export interface Name {
   ticker: string;
   name: string;
-  start: number;
-  beta: number;
-  vol: number;
 }
 
 export interface Position {
@@ -89,7 +86,6 @@ export interface EngineState {
   positions: Record<string, Position>;
   prices: Record<string, number>;
   series: Record<string, number[]>;
-  factor: number;
   trades: Trade[];
   decisions: DecisionEvent[];
   equity: EquityPoint[];
@@ -98,12 +94,16 @@ export interface EngineState {
   maxDrawdown: number;
   modelName: string;
   nextTradeId: number;
+  dataSource: "yahoo" | "fixture";
+  quoteTs: number;
 }
 
 export interface FundSnapshot {
   model: string;
   jevConfigured: boolean;
   dryRun: true;
+  dataSource: "yahoo" | "fixture";
+  quoteTs: number;
   tick: number;
   ts: number;
   cash: number;
