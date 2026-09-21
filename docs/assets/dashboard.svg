@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920" role="img" aria-label="jev-fund dashboard">
+  <rect width="1440" height="920" fill="#F4EFE6"/>
+  <rect x="24" y="24" width="1392" height="872" rx="16" fill="#FFFcf7" stroke="#E8E0D4"/>
+  <text x="48" y="64" font-family="ui-sans-serif, system-ui, Helvetica, Arial" font-size="22" font-weight="700" fill="#111">jev-fund</text>
+  <rect x="168" y="44" width="52" height="22" rx="4" fill="#F1EDE4"/>
+  <text x="194" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#666" font-family="ui-sans-serif, system-ui, Helvetica, Arial">PAPER</text>
+  <rect x="228" y="44" width="52" height="22" rx="4" fill="#E8F4EC"/>
+  <text x="254" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">MOCK</text>
+  <text x="1392" y="60" text-anchor="end" font-size="12" fill="#7A7A7A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Holdings, buys, and losses in public.</text>
+
+  <text x="48" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">NAV</text>
+  <text x="48" y="132" font-size="22" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$101,507.21</text>
+  <text x="260" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">P&amp;L</text>
+  <text x="260" y="132" font-size="22" font-weight="700" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$1,507.21</text>
+  <text x="460" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">REALIZED</text>
+  <text x="460" y="132" font-size="22" font-weight="700" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$1,630.87</text>
+  <text x="680" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">UNREALIZED</text>
+  <text x="680" y="132" font-size="22" font-weight="700" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$123.66</text>
+  <text x="920" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">LOSSES</text>
+  <text x="920" y="132" font-size="22" font-weight="700" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">107</text>
+  <text x="1080" y="108" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">WIN RATE</text>
+  <text x="1080" y="132" font-size="22" font-weight="700" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">+48.00%</text>
+
+  <rect x="48" y="164" width="820" height="280" rx="12" fill="#fff" stroke="#EFE8DC"/>
+  <text x="64" y="192" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">EQUITY</text>
+  <polyline fill="none" stroke="#2FBF71" stroke-width="3" points="80,380 140,360 200,370 260,300 340,250 420,220 500,200 580,210 660,190 740,205 820,198"/>
+  <line x1="80" y1="300" x2="840" y2="300" stroke="#E6E0D6" stroke-dasharray="4 4"/>
+
+  <rect x="888" y="164" width="504" height="280" rx="12" fill="#fff" stroke="#EFE8DC"/>
+  <text x="908" y="192" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">THIS TICK</text>
+  <text x="908" y="228" font-size="13" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">AMZN</text>
+  <text x="908" y="278" font-size="42" font-weight="700" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="908" y="312" font-size="14" fill="#666" font-family="ui-sans-serif, system-ui, Helvetica, Arial">sold 2.7 AMZN</text>
+  <rect x="908" y="340" width="140" height="72" rx="10" fill="#F7F4EE"/>
+  <text x="924" y="364" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">BUY</text>
+  <text x="924" y="388" font-size="18" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">29%</text>
+  <rect x="1060" y="340" width="140" height="72" rx="10" fill="#F7F4EE"/>
+  <text x="1076" y="364" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="1076" y="388" font-size="18" font-weight="700" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">37%</text>
+  <rect x="1212" y="340" width="156" height="72" rx="10" fill="#F7F4EE"/>
+  <text x="1228" y="364" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">HOLD</text>
+  <text x="1228" y="388" font-size="18" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">33%</text>
+
+  <rect x="48" y="464" width="680" height="400" rx="12" fill="#fff" stroke="#EFE8DC"/>
+  <text x="64" y="494" font-size="12" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">HOLDINGS</text>
+  <text x="64" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Name</text>
+  <text x="280" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Shares</text>
+  <text x="400" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Value</text>
+  <text x="540" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Unrl. P&amp;L</text>
+  <text x="64" y="568" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">NVDA</text>
+  <text x="280" y="568" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">65.58</text>
+  <text x="400" y="568" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$8,129.43</text>
+  <text x="540" y="568" font-size="14" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$47.40</text>
+  <text x="64" y="604" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">MSFT</text>
+  <text x="280" y="604" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">9.34</text>
+  <text x="400" y="604" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$4,144.88</text>
+  <text x="540" y="604" font-size="14" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$27.67</text>
+  <text x="64" y="640" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">META</text>
+  <text x="280" y="640" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">7.37</text>
+  <text x="400" y="640" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$4,093.85</text>
+  <text x="540" y="640" font-size="14" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$1.62</text>
+  <text x="64" y="676" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">JPM</text>
+  <text x="280" y="676" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">9.97</text>
+  <text x="400" y="676" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$2,208.03</text>
+  <text x="540" y="676" font-size="14" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$8.02</text>
+  <text x="64" y="712" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TSLA</text>
+  <text x="280" y="712" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">7.60</text>
+  <text x="400" y="712" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$1,915.68</text>
+  <text x="540" y="712" font-size="14" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$132.87</text>
+  <text x="64" y="748" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">AMZN</text>
+  <text x="280" y="748" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">2.69</text>
+  <text x="400" y="748" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$526.44</text>
+  <text x="540" y="748" font-size="14" fill="#1F7A4C" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$19.85</text>
+  <text x="64" y="784" font-size="14" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TLT</text>
+  <text x="280" y="784" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">5.73</text>
+  <text x="400" y="784" font-size="14" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">$503.03</text>
+  <text x="540" y="784" font-size="14" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$18.94</text>
+
+  <rect x="748" y="464" width="644" height="400" rx="12" fill="#fff" stroke="#EFE8DC"/>
+  <text x="768" y="494" font-size="12" font-weight="700" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TAPE</text>
+  <text x="1220" y="494" font-size="12" font-weight="700" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Losses</text>
+  <text x="768" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Time</text>
+  <text x="860" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Side</text>
+  <text x="960" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Name</text>
+  <text x="1240" y="530" font-size="11" fill="#8A8A8A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">Realized</text>
+  <text x="768" y="568" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:38:33</text>
+  <rect x="850" y="552" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="568" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="568" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TLT</text>
+  <text x="1240" y="568" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$18.57</text>
+  <text x="768" y="604" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:38:21</text>
+  <rect x="850" y="588" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="604" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="604" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TSLA</text>
+  <text x="1240" y="604" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$28.01</text>
+  <text x="768" y="640" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:37:57</text>
+  <rect x="850" y="624" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="640" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="640" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">AAPL</text>
+  <text x="1240" y="640" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$0.13</text>
+  <text x="768" y="676" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:37:53</text>
+  <rect x="850" y="660" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="676" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="676" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TLT</text>
+  <text x="1240" y="676" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$28.95</text>
+  <text x="768" y="712" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:37:45</text>
+  <rect x="850" y="696" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="712" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="712" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">JPM</text>
+  <text x="1240" y="712" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$30.63</text>
+  <text x="768" y="748" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:37:41</text>
+  <rect x="850" y="732" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="748" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="748" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">TSLA</text>
+  <text x="1240" y="748" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$41.38</text>
+  <text x="768" y="784" font-size="13" fill="#444" font-family="ui-sans-serif, system-ui, Helvetica, Arial">16:36:57</text>
+  <rect x="850" y="768" width="44" height="22" rx="6" fill="#FDECEC"/>
+  <text x="872" y="784" text-anchor="middle" font-size="11" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">SELL</text>
+  <text x="960" y="784" font-size="13" fill="#111" font-family="ui-sans-serif, system-ui, Helvetica, Arial">META</text>
+  <text x="1240" y="784" font-size="13" fill="#C23B2A" font-family="ui-sans-serif, system-ui, Helvetica, Arial">-$45.46</text>
+</svg>
