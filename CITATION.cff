@@ -11,10 +11,13 @@ url: "https://github.com/erboland/jev-fund"
 abstract: "Open-source paper hedge fund. Jev (or a mock stand-in) decides buy, sell, or hold. The demo shows holdings, buys, and losses in public."
 keywords:
   - quantitative-finance
+  - quantitative-trading
   - hedge-fund
   - paper-trading
+  - algorithmic-trading
   - jev
   - typescript
+  - research
 license: MIT
 version: 0.1.0
 date-released: "2026-09-21"

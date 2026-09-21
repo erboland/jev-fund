@@ -14,10 +14,15 @@
   },
   "keywords": [
     "quantitative-finance",
+    "quantitative-trading",
+    "algorithmic-trading",
     "hedge-fund",
     "paper-trading",
-    "jev",
     "ai",
+    "llm",
+    "jev",
+    "fintech",
+    "research",
     "nextjs"
   ],
   "scripts": {
