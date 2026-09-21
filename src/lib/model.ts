@@ -113,7 +113,9 @@ export async function decide(state: MarketState, tick: number): Promise<Decision
   if (!jevConfigured()) return mockDecide(state, tick);
   try {
     return await jevDecide(state);
-  } catch {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "jev evaluate failed";
+    console.error("jev evaluate failed:", message);
     const fallback = mockDecide(state, tick);
     return { ...fallback, model: "mock (jev failed)" };
   }
