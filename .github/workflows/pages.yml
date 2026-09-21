@@ -18,7 +18,6 @@ concurrency:
 
 jobs:
   demo-gif:
-    if: ${{ hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64') != '' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,6 +26,7 @@ jobs:
         with:
           ref: main
       - name: Write the demo recording
+        if: hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64') != ''
         run: |
           set -eu
           base64 -d docs/assets/demo.gif.b64 > docs/assets/demo.gif
@@ -68,24 +68,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -eu
-          api="https://api.github.com/repos/${{ github.repository }}/pages"
-          auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
-          code=$(curl -sS -o /tmp/pages-create.json -w "%{http_code}" -X POST "${auth[@]}" "$api" -d '{"build_type":"workflow"}')
-          echo "pages create HTTP ${code}"
-          if [ "$code" = "201" ]; then
-            exit 0
-          fi
-          code=$(curl -sS -o /tmp/pages-update.json -w "%{http_code}" -X PUT "${auth[@]}" "$api" -d '{"build_type":"workflow"}')
-          echo "pages update HTTP ${code}"
-          if [ "$code" = "200" ] || [ "$code" = "201" ]; then
-            exit 0
-          fi
-          echo "GitHub Pages is still off. Create response:"
-          cat /tmp/pages-create.json
-          echo
-          echo "Update response:"
-          cat /tmp/pages-update.json
-          exit 1
+          gh api --method POST "/repos/${{ github.repository }}/pages" -f build_type=workflow \
+            || gh api --method PUT "/repos/${{ github.repository }}/pages" -f build_type=workflow
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
