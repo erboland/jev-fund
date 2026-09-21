@@ -18,9 +18,3 @@ export function hashSeed(...parts: number[]) {
   }
   return h >>> 0;
 }
-
-export function gauss(rand: () => number) {
-  const u = Math.max(1e-9, rand());
-  const v = rand();
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
