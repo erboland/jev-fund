@@ -1,19 +1,31 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 import { simulateHistory, snapshotOf } from "./fund";
+import { alignSessions, sessionsFromFixture } from "./quotes";
 
-describe("paper fund", () => {
-  const snap = snapshotOf(simulateHistory(Date.UTC(2026, 8, 21, 16, 0, 0)));
+const fixture = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), "quotes.fixture.json"), "utf8")
+) as { ts: number[]; prices: Record<string, number[]> };
 
-  it("keeps a book of holdings", () => {
+describe("paper fund on real Yahoo sessions", () => {
+  const sessions = sessionsFromFixture(fixture);
+  const snap = snapshotOf(simulateHistory(sessions, "fixture"));
+
+  it("replays enough real sessions to hold a book", () => {
+    assert.ok(sessions.length >= 60, "fixture should cover months of prints");
     assert.ok(snap.holdings.length >= 3, "expected several names in the book");
     assert.ok(snap.nav > 0);
     assert.ok(snap.cash >= 0);
+    assert.equal(snap.dataSource, "fixture");
   });
 
-  it("records buys", () => {
+  it("records buys at Yahoo closes", () => {
     const buys = snap.trades.filter((t) => t.side === "buy");
     assert.ok(buys.length >= 5, "expected a buy blotter");
+    assert.ok(buys.every((t) => t.price > 0));
   });
 
   it("realizes losses as well as wins", () => {
@@ -23,5 +35,27 @@ describe("paper fund", () => {
     assert.ok(sells.length >= 3, "expected closed trades");
     assert.ok(losses.length >= 1, "losses must show up — this is a fund, not a highlight reel");
     assert.ok(wins.length >= 1, "some winners too");
+  });
+});
+
+describe("quote alignment", () => {
+  it("keeps only days every name printed", () => {
+    const sessions = alignSessions({
+      AAPL: [
+        { ts: 1, close: 10 },
+        { ts: 2, close: 11 },
+        { ts: 3, close: 12 },
+      ],
+      MSFT: [
+        { ts: 2, close: 20 },
+        { ts: 3, close: 21 },
+      ],
+    });
+    assert.deepEqual(
+      sessions.map((s) => s.ts),
+      [2, 3]
+    );
+    assert.equal(sessions[0].prices.AAPL, 11);
+    assert.equal(sessions[0].prices.MSFT, 20);
   });
 });
