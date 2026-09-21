@@ -1,0 +1,21 @@
+name: Bug report
+description: Something on the paper tape looks wrong
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Educational paper trading only. Do not paste API keys.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      placeholder: NAV jumped, Losses tab empty, Jev fallback failed…
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      placeholder: npm run dev, MODEL=mock, tick ~180
+    validations:
+      required: true

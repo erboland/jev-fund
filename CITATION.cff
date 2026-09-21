@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "jev-fund"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Karshyga
+    given-names: Yerbol
+    email: karshigaerbol@gmail.com
+repository-code: "https://github.com/erboland/jev-fund"
+url: "https://github.com/erboland/jev-fund"
+abstract: "Open-source paper hedge fund. Jev (or a mock stand-in) decides buy, sell, or hold. The demo shows holdings, buys, and losses in public."
+keywords:
+  - quantitative-finance
+  - hedge-fund
+  - paper-trading
+  - jev
+  - typescript
+license: MIT
+version: 0.1.0
+date-released: "2026-09-21"
