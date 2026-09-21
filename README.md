@@ -40,7 +40,7 @@ A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.
 
 ## News
 
-- **[2026-09] v0.1.2** — GitHub Pages serves a static Yahoo-marked book. See [the site](https://erboland.github.io/jev-fund/).
+- **[2026-09] v0.1.2** — GitHub Pages serves a static Yahoo-marked book. See [the site](https://jev.qinvesting.ai/).
 - **[2026-09] v0.1.1** — Paper book marks to **real Yahoo Finance** daily history and last print. Still paper fills only.
 - **[2026-09] v0.1.0** — Public paper book: holdings, buys, realized losses, Jev or mock, MIT + citation. See [CHANGELOG.md](CHANGELOG.md).
 - **[2026-09] Roadmap** — Persistence. See [ROADMAP.md](ROADMAP.md).
@@ -74,7 +74,7 @@ Do not connect a brokerage, wallet, or private key to this repository.
 | --- | --- |
 | Local | `npm run dev` → [http://127.0.0.1:43147](http://127.0.0.1:43147) |
 | GitHub Pages | [erboland.github.io/jev-fund](https://erboland.github.io/jev-fund/) (live) |
-| Custom domain | [fund.qinvesting.ai](https://fund.qinvesting.ai/) — optional; see [Deploy](#deploy) |
+| Custom domain | [jev.qinvesting.ai](https://jev.qinvesting.ai/) — see [Deploy](#deploy) |
 | Dashboard | Holdings, buys, realized **losses**, equity curve, this-tick probabilities |
 | Default model | Deterministic **mock** (no API key) on **real Yahoo prices** |
 | Optional model | `MODEL=jev` via Vercel AI Gateway / TypeSafe |
@@ -206,16 +206,16 @@ Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@kar
 
 [GitHub Pages](https://erboland.github.io/jev-fund/) publishes the static book from `.github/workflows/pages.yml` on every push to `main` and hourly. Pages source must be **GitHub Actions** (repo settings → Pages).
 
-### Custom domain (`fund.qinvesting.ai`)
+### Custom domain (`jev.qinvesting.ai`)
 
 The apex domain [qinvesting.ai](https://qinvesting.ai) already points at Vercel, so use a subdomain for this demo:
 
-1. **DNS** (at your registrar or Vercel DNS): `CNAME fund → erboland.github.io`
-2. **GitHub** → Settings → Pages → Custom domain: `fund.qinvesting.ai` (enforce HTTPS)
-3. **Repo variable** `PAGES_CNAME` = `fund.qinvesting.ai` (Settings → Secrets and variables → Actions → Variables). The next Pages build exports at the site root and writes `out/CNAME`.
-4. Re-run the **Pages** workflow.
+1. **DNS** (Porkbun): `CNAME jev → erboland.github.io`
+2. **GitHub** → Settings → Pages → Custom domain: `jev.qinvesting.ai` (enforce HTTPS)
+3. The Pages workflow defaults `PAGES_CNAME` to `jev.qinvesting.ai`, so the next build exports at the site root and writes `out/CNAME`.
+4. Re-run the **Pages** workflow if you changed DNS or the custom domain after the last deploy.
 
-Until step 3 runs, keep using the [github.io URL](https://erboland.github.io/jev-fund/). Moving the apex off Vercel to GitHub Pages would require replacing the main `qinvesting.ai` site, not just this repo.
+Until DNS and Pages agree, keep using the [github.io URL](https://erboland.github.io/jev-fund/). Moving the apex off Vercel to GitHub Pages would require replacing the main `qinvesting.ai` site, not just this repo.
 
 A Node host that stays warm still runs the live 4-second tape (`npm start`). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
 
