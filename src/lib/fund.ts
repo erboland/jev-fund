@@ -1,5 +1,5 @@
 import { pickTicker, returns } from "./market";
-import { decide, mockDecide } from "./model";
+import { decide, jevConfigured, mockDecide } from "./model";
 import { quotesChanged, type Session } from "./quotes";
 import type {
   Decision,
@@ -225,7 +225,14 @@ export async function stepEngineAsync(
 ) {
   const prev = { ...state.prices };
   const mkt = advanceMarket(state, prices, ts);
-  if (!quotesChanged(prev, state.prices, mkt.ticker)) {
+  const flat = !quotesChanged(prev, state.prices, mkt.ticker);
+  // History is the mock. The first live tick asks Jev even if the print is
+  // unchanged (after hours), then later flat ticks hold without another call.
+  const needsJev =
+    jevConfigured() &&
+    state.modelName !== "jev" &&
+    state.modelName !== "mock (jev failed)";
+  if (flat && !needsJev) {
     finishTick(
       state,
       mkt,
