@@ -14,8 +14,12 @@ import type { FundSnapshot } from "@/lib/types";
 
 type Conn = "connecting" | "live" | "error";
 
+const staticSite = process.env.NEXT_PUBLIC_STATIC === "1";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 async function loadFund(): Promise<FundSnapshot> {
-  const res = await fetch("/api/fund", { cache: "no-store" });
+  const url = staticSite ? `${basePath}/book.json` : "/api/fund";
+  const res = await fetch(url, { cache: "no-store" });
   const body = (await res.json()) as FundSnapshot & { error?: string };
   if (!res.ok) {
     throw new Error(body.error ?? `Yahoo feed ${res.status}`);
@@ -53,7 +57,8 @@ export function Dashboard({
       }
     }
 
-    const id = setInterval(refresh, TICK_MS);
+    void refresh();
+    const id = setInterval(refresh, staticSite ? 5 * 60_000 : TICK_MS);
     return () => {
       cancelled = true;
       clearInterval(id);

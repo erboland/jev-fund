@@ -53,8 +53,9 @@ export function FundHeader({
         </span>
       </div>
       <p className="max-w-xl text-sm text-muted-foreground">
-        Real Yahoo prices on a $100k long-only paper book. Holdings, buys, and
-        losses in public.
+        {process.env.NEXT_PUBLIC_STATIC === "1"
+          ? "Yahoo snapshot published to GitHub Pages. Run it locally for the live tape."
+          : "Real Yahoo prices on a $100k long-only paper book. Holdings, buys, and losses in public."}
       </p>
     </header>
   );

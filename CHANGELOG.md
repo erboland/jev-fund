@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.1.2] — 2026-09-21
+
+### Added
+
+- GitHub Pages publish of the Yahoo-marked paper book (`npm run build:pages`)
+
 ## [0.1.1] — 2026-09-21
 
 ### Changed
