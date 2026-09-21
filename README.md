@@ -41,8 +41,9 @@ A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.
 
 ## News
 
+- **[2026-09] v0.1.1** — Paper book marks to **real Yahoo Finance** daily history and last print. Still paper fills only.
 - **[2026-09] v0.1.0** — Public paper book: holdings, buys, realized losses, Jev or mock, MIT + citation. See [CHANGELOG.md](CHANGELOG.md).
-- **[2026-09] Roadmap** — Persistence and optional live quotes (still paper fills). See [ROADMAP.md](ROADMAP.md).
+- **[2026-09] Roadmap** — Persistence. See [ROADMAP.md](ROADMAP.md).
 
 <div align="center">
 
@@ -56,8 +57,8 @@ This software is a **research toy**. By using it you agree:
 
 - Not intended for real trading or investment
 - No investment advice, solicitation, or performance guarantee
-- Simulated prices and paper fills only — **losses are shown on purpose**
-- Past (simulated) returns do not indicate future results
+- Yahoo Finance prices (typically delayed) and **paper fills only** — **losses are shown on purpose**
+- Past paper P&L on Yahoo prints does not indicate future results
 - The authors assume no liability for financial losses
 - Consult a licensed advisor before investing real capital
 
@@ -73,8 +74,9 @@ Do not connect a brokerage, wallet, or private key to this repository.
 | --- | --- |
 | Local | `npm run dev` → [http://127.0.0.1:43147](http://127.0.0.1:43147) |
 | Dashboard | Holdings, buys, realized **losses**, equity curve, this-tick probabilities |
-| Default model | Deterministic **mock** (no API key) |
+| Default model | Deterministic **mock** (no API key) on **real Yahoo prices** |
 | Optional model | `MODEL=jev` via Vercel AI Gateway / TypeSafe |
+| Market data | Yahoo Finance daily history + last print (delayed). No quote API key. |
 
 What you are looking at:
 
@@ -134,7 +136,7 @@ flowchart LR
     D[Dashboard]
   end
   subgraph Engine
-    M[Market path]
+    M[Yahoo prints]
     J[Jev or mock]
     B[Paper book]
     P[P&L / losses]
@@ -147,17 +149,18 @@ flowchart LR
 
 | Role | What it does |
 | --- | --- |
-| **Market** | Seeded factor path over a liquid 10-name universe |
+| **Market** | Yahoo Finance daily closes, then last print (delayed) |
 | **Jev / mock** | Scores one ticker per tick: buy, sell, or hold |
 | **Paper book** | Clip size ~8% of NAV, cap ~22% per name, cash long-only |
 | **Tape** | Holdings, buy blotter, and realized **losses** in public |
 
-1. A seeded factor model walks prices.
-2. Each tick, one name is scored: momentum, inventory, and (optionally) Jev `experimental_evaluate`.
-3. Buys are capped. Sells realize P&L, including losses.
-4. The Next.js page polls `/api/fund` and renders the book.
+1. Yahoo daily history is aligned across the 10-name universe.
+2. The paper book trades that path at real closes, then marks to the latest Yahoo print.
+3. Each tick, one name is scored: momentum, inventory, and (optionally) Jev `experimental_evaluate`.
+4. Buys are capped. Sells realize P&L, including losses.
+5. The Next.js page polls `/api/fund` and renders the book.
 
-> The framework is designed for research. Simulated performance varies with the model, seed, and path. It is not financial, investment, or trading advice.
+> The framework is designed for research. Paper P&L on delayed Yahoo prints is not live trading performance. It is not financial, investment, or trading advice.
 
 ### Universe
 
@@ -177,6 +180,7 @@ flowchart LR
 ## Layout
 
 ```
+src/lib/quotes.ts     Yahoo Finance daily + last print
 src/lib/fund.ts       paper book, fills, P&L
 src/lib/model.ts      mock + Jev (`experimental_evaluate`)
 src/lib/runtime.ts    in-memory live loop
@@ -208,7 +212,7 @@ Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@Qin
 
 ## Deploy
 
-Any Node host that can keep a process warm (so the in-memory book keeps ticking). On Vercel the book rebuilds on cold start from the same seeded history, then continues per isolate.
+Any Node host that can keep a process warm (so the in-memory book keeps ticking). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
 
 ## Contributing
 
