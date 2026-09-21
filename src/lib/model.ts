@@ -109,12 +109,20 @@ export async function jevDecide(state: MarketState): Promise<Decision> {
   };
 }
 
+/** Strip credentials before a message is logged or returned to the client. */
+export function redact(message: string) {
+  return message
+    .replace(/vck_[A-Za-z0-9_-]+/g, "[redacted]")
+    .replace(/\bsk-[A-Za-z0-9_-]+/g, "[redacted]")
+    .replace(/Bearer\s+\S+/gi, "Bearer [redacted]");
+}
+
 export async function decide(state: MarketState, tick: number): Promise<Decision> {
   if (!jevConfigured()) return mockDecide(state, tick);
   try {
     return await jevDecide(state);
   } catch (err) {
-    const message = err instanceof Error ? err.message : "jev evaluate failed";
+    const message = redact(err instanceof Error ? err.message : "jev evaluate failed");
     console.error("jev evaluate failed:", message);
     const fallback = mockDecide(state, tick);
     return { ...fallback, model: "mock (jev failed)" };
