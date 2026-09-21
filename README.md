@@ -1,43 +1,58 @@
 <p align="center">
-  <strong>jev-fund</strong>
+  <img src="docs/assets/logo.svg" alt="jev-fund" width="520" />
 </p>
 
 <p align="center">
-  Open-source <b>paper hedge fund</b>. Jev decides. The tape shows holdings, buys, and losses.
+  <b>An open-source paper hedge fund.</b><br />
+  Jev decides. The tape shows holdings, buys, and losses.
 </p>
 
 <p align="center">
-  <a href="https://github.com/erboland/jev-fund/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/erboland/jev-fund?color=0FA968" /></a>
-  <a href="https://github.com/erboland/jev-fund/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/erboland/jev-fund?style=social" /></a>
-  <a href="https://github.com/erboland/jev-fund/issues"><img alt="Issues" src="https://img.shields.io/github/issues/erboland/jev-fund" /></a>
+  <a href="https://github.com/erboland/jev-fund/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/erboland/jev-fund/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/erboland/jev-fund?color=0FA968" /></a>
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" />
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs" />
   <img alt="Jev" src="https://img.shields.io/badge/model-Jev%20(TypeSafe)-7B6ED9" />
+  <img alt="Paper trading" src="https://img.shields.io/badge/trading-paper%20only-lightgrey" />
+  <a href="https://github.com/erboland/jev-fund/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/erboland/jev-fund?style=social" /></a>
   <a href="https://x.com/QinvestingAI"><img alt="Follow @QinvestingAI" src="https://img.shields.io/twitter/follow/QinvestingAI?style=social" /></a>
 </p>
 
 <p align="center">
-  <a href="#disclaimer">Disclaimer</a> ·
+  <a href="DISCLAIMER.md">Disclaimer</a> ·
+  <a href="#news">News</a> ·
   <a href="#demo">Demo</a> ·
-  <a href="#quick-start">Quick start</a> ·
-  <a href="#how-it-works">How it works</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#framework">Framework</a> ·
   <a href="#related-work">Related work</a> ·
   <a href="#citation">Citation</a>
 </p>
 
-<p align="center">
-  <img src="docs/assets/dashboard.png" alt="jev-fund dashboard: NAV, equity curve, holdings, and realized losses tape" width="100%" />
-</p>
+---
 
-# jev-fund
+# jev-fund: Open-Source Paper Hedge Fund
 
 A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.com/kb/guide/typesafe-jev-and-ai-sdk) (TypeSafe System One, via the Vercel AI SDK) answers buy / sell / hold on a $100k long-only book. The public page is a live tape — the same product pattern as [jev-trader](https://jev-trader.vercel.app/), for a fund instead of a Monad market-maker.
 
-This project is for **educational and research purposes only**. It does not place live orders. It is not investment advice.
+> [!IMPORTANT]
+> This project is for **educational and research purposes only**. It does not place live orders. It is not investment advice. Read [DISCLAIMER.md](DISCLAIMER.md).
+
+> 🎉 **jev-fund** is open source. Fork it, run it keyless, and keep the Losses tab honest.
+
+## News
+
+- **[2026-09] v0.1.0** — Public paper book: holdings, buys, realized losses, Jev or mock, MIT + citation. See [CHANGELOG.md](CHANGELOG.md).
+- **[2026-09] Roadmap** — Persistence and optional live quotes (still paper fills). See [ROADMAP.md](ROADMAP.md).
+
+<div align="center">
+
+🚀 [Framework](#framework) | ⚡ [Installation](#installation) | 🎬 [Demo](#demo) | 🤝 [Contributing](#contributing) | 📄 [Citation](#citation)
+
+</div>
 
 ## Disclaimer
 
-This software is a **research toy**. By using it you agree to the following:
+This software is a **research toy**. By using it you agree:
 
 - Not intended for real trading or investment
 - No investment advice, solicitation, or performance guarantee
@@ -49,6 +64,10 @@ This software is a **research toy**. By using it you agree to the following:
 Do not connect a brokerage, wallet, or private key to this repository.
 
 ## Demo
+
+<p align="center">
+  <img src="docs/assets/dashboard.svg" alt="jev-fund dashboard: NAV, equity curve, holdings, and realized losses tape" width="100%" />
+</p>
 
 | | |
 | --- | --- |
@@ -69,7 +88,7 @@ What you are looking at:
 
 Every ~4 seconds the engine looks at one name in a 10-ticker universe, sizes a paper order, and prints the tape.
 
-## Quick start
+## Installation
 
 ```bash
 git clone https://github.com/erboland/jev-fund.git
@@ -101,7 +120,13 @@ If Jev is unreachable, the fund falls back to mock so the page never goes blank.
 | `npm run build` | Production build |
 | `npm start` | Serve the build on 43147 |
 
-## How it works
+## Framework
+
+jev-fund decomposes a fund tick the way a small desk would: a market, a decision, a book, and a public tape.
+
+<p align="center">
+  <img src="docs/assets/schema.svg" alt="Market path → Jev or mock → paper book → public tape" width="100%" />
+</p>
 
 ```mermaid
 flowchart LR
@@ -117,13 +142,22 @@ flowchart LR
   M -->|state| J
   J -->|buy / sell / hold| B
   B --> P
-  P -->|SSE-like poll| D
+  P -->|poll| D
 ```
 
-1. A seeded factor model walks prices for a small liquid universe.
+| Role | What it does |
+| --- | --- |
+| **Market** | Seeded factor path over a liquid 10-name universe |
+| **Jev / mock** | Scores one ticker per tick: buy, sell, or hold |
+| **Paper book** | Clip size ~8% of NAV, cap ~22% per name, cash long-only |
+| **Tape** | Holdings, buy blotter, and realized **losses** in public |
+
+1. A seeded factor model walks prices.
 2. Each tick, one name is scored: momentum, inventory, and (optionally) Jev `experimental_evaluate`.
-3. Buys are capped at ~8% of NAV per clip and ~22% per name. Sells realize P&L, including losses.
-4. The Next.js page polls `/api/fund` and renders the book in public.
+3. Buys are capped. Sells realize P&L, including losses.
+4. The Next.js page polls `/api/fund` and renders the book.
+
+> The framework is designed for research. Simulated performance varies with the model, seed, and path. It is not financial, investment, or trading advice.
 
 ### Universe
 
@@ -148,13 +182,17 @@ src/lib/model.ts      mock + Jev (`experimental_evaluate`)
 src/lib/runtime.ts    in-memory live loop
 src/app/api/fund    snapshot JSON
 src/components/       dashboard
-docs/assets/          README screenshots
+docs/assets/          logo, schema, README screenshot
 docs/launch/          X, Hacker News, Reddit copy
+DISCLAIMER.md         research-toy terms
+CHANGELOG.md          release notes
+ROADMAP.md            what this desk will and will not do
+CITATION.cff          GitHub citation file
 ```
 
 ## Related work
 
-Educational AI / quant open source this repo sits next to (not affiliated):
+Educational AI / quant open source this repo sits next to (**not affiliated**):
 
 | Project | Why look at it |
 | --- | --- |
@@ -162,6 +200,7 @@ Educational AI / quant open source this repo sits next to (not affiliated):
 | [jarrodwatts/jev-trader](https://github.com/jarrodwatts/jev-trader) | Live public tape; one Jev decision per Monad block. |
 | [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) | LLM trading-firm agents + paper. |
 | [microsoft/qlib](https://github.com/microsoft/qlib) | AI-oriented quant investment platform. |
+| [AI4Finance-Foundation/FinRL](https://github.com/AI4Finance-Foundation/FinRL) | Financial reinforcement learning research stack. |
 
 **jev-fund** is the *watchable paper book*: a browser, a blotter, and honest losses. It is not a backtester, not a broker, and not QInvesting's production engine.
 
@@ -174,6 +213,10 @@ Any Node host that can keep a process warm (so the in-memory book keeps ticking)
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Please keep PRs small. Paper P&L must stay honest — do not hide losing sells from the Losses tape.
+
+<a href="https://github.com/erboland/jev-fund/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=erboland/jev-fund" alt="contributors" />
+</a>
 
 ## Citation
 
@@ -197,4 +240,6 @@ Also see [CITATION.cff](CITATION.cff).
 
 ## License
 
-[MIT](LICENSE). Not affiliated with TypeSafe, Vercel, or the authors of jev-trader / ai-hedge-fund beyond using public APIs and the same research pattern.
+[MIT](LICENSE). See [NOTICE](NOTICE). Not affiliated with TypeSafe, Vercel, or the authors of jev-trader / ai-hedge-fund / TradingAgents / Qlib beyond using public APIs and the same research pattern.
+
+**Disclaimer:** we are sharing this code for academic and demonstration purposes under the MIT license. Nothing herein is financial advice or a recommendation to trade real money.

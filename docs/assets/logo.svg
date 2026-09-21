@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="120" viewBox="0 0 720 120" role="img" aria-label="jev-fund">
+  <rect width="720" height="120" fill="#F6F1E8"/>
+  <rect x="18" y="22" width="76" height="76" rx="14" fill="#0F1F17"/>
+  <polyline fill="none" stroke="#2FBF71" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" points="32,72 44,64 54,68 66,42 80,50"/>
+  <text x="112" y="72" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial" font-size="42" font-weight="700" fill="#0F1F17" letter-spacing="-1.2">jev-fund</text>
+  <text x="392" y="70" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial" font-size="13" font-weight="600" fill="#6B7A70" letter-spacing="2.4">PAPER · OPEN SOURCE</text>
+</svg>

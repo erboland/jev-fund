@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="220" viewBox="0 0 980 220" role="img" aria-label="jev-fund architecture">
+  <rect width="980" height="220" fill="#F6F1E8"/>
+  <g font-family="ui-sans-serif, system-ui, Helvetica, Arial" font-size="14">
+    <rect x="24" y="58" width="180" height="88" rx="14" fill="#fff" stroke="#D8D0C4"/>
+    <text x="114" y="96" text-anchor="middle" font-weight="700" fill="#0F1F17">Market path</text>
+    <text x="114" y="116" text-anchor="middle" fill="#6B7A70">seeded prices</text>
+
+    <rect x="268" y="58" width="180" height="88" rx="14" fill="#fff" stroke="#D8D0C4"/>
+    <text x="358" y="96" text-anchor="middle" font-weight="700" fill="#0F1F17">Jev / mock</text>
+    <text x="358" y="116" text-anchor="middle" fill="#6B7A70">buy · sell · hold</text>
+
+    <rect x="512" y="58" width="180" height="88" rx="14" fill="#fff" stroke="#D8D0C4"/>
+    <text x="602" y="96" text-anchor="middle" font-weight="700" fill="#0F1F17">Paper book</text>
+    <text x="602" y="116" text-anchor="middle" fill="#6B7A70">fills · inventory</text>
+
+    <rect x="756" y="58" width="200" height="88" rx="14" fill="#0F1F17"/>
+    <text x="856" y="96" text-anchor="middle" font-weight="700" fill="#F6F1E8">Public tape</text>
+    <text x="856" y="116" text-anchor="middle" fill="#9AE6B4">holdings · buys · losses</text>
+
+    <path d="M204 102 H268" stroke="#0F1F17" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M448 102 H512" stroke="#0F1F17" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M692 102 H756" stroke="#0F1F17" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0F1F17"/>
+    </marker>
+  </defs>
+</svg>
