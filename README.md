@@ -15,7 +15,7 @@
   <img alt="Jev" src="https://img.shields.io/badge/model-Jev%20(TypeSafe)-7B6ED9" />
   <img alt="Paper trading" src="https://img.shields.io/badge/trading-paper%20only-lightgrey" />
   <a href="https://github.com/erboland/jev-fund/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/erboland/jev-fund?style=social" /></a>
-  <a href="https://x.com/QinvestingAI"><img alt="Follow @QinvestingAI" src="https://img.shields.io/twitter/follow/QinvestingAI?style=social" /></a>
+  <a href="https://x.com/karshigaerbol"><img alt="Follow @karshigaerbol" src="https://img.shields.io/twitter/follow/karshigaerbol?style=social" /></a>
 </p>
 
 <p align="center">
@@ -73,7 +73,8 @@ Do not connect a brokerage, wallet, or private key to this repository.
 | | |
 | --- | --- |
 | Local | `npm run dev` → [http://127.0.0.1:43147](http://127.0.0.1:43147) |
-| GitHub Pages | [erboland.github.io/jev-fund](https://erboland.github.io/jev-fund/) |
+| GitHub Pages | [erboland.github.io/jev-fund](https://erboland.github.io/jev-fund/) (live) |
+| Custom domain | [fund.qinvesting.ai](https://fund.qinvesting.ai/) — optional; see [Deploy](#deploy) |
 | Dashboard | Holdings, buys, realized **losses**, equity curve, this-tick probabilities |
 | Default model | Deterministic **mock** (no API key) on **real Yahoo prices** |
 | Optional model | `MODEL=jev` via Vercel AI Gateway / TypeSafe |
@@ -199,11 +200,22 @@ CITATION.cff          GitHub citation file
 
 **jev-fund** is a watchable paper book: a browser, a blotter, and honest losses. It is not a broker, and not the QInvesting production engine.
 
-Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@QinvestingAI**](https://x.com/QinvestingAI).
+Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@karshigaerbol**](https://x.com/karshigaerbol).
 
 ## Deploy
 
-[GitHub Pages](https://erboland.github.io/jev-fund/) publishes the static book from `.github/workflows/pages.yml` on every push to `main` and hourly. In the repo settings, set Pages source to **GitHub Actions**.
+[GitHub Pages](https://erboland.github.io/jev-fund/) publishes the static book from `.github/workflows/pages.yml` on every push to `main` and hourly. Pages source must be **GitHub Actions** (repo settings → Pages).
+
+### Custom domain (`fund.qinvesting.ai`)
+
+The apex domain [qinvesting.ai](https://qinvesting.ai) already points at Vercel, so use a subdomain for this demo:
+
+1. **DNS** (at your registrar or Vercel DNS): `CNAME fund → erboland.github.io`
+2. **GitHub** → Settings → Pages → Custom domain: `fund.qinvesting.ai` (enforce HTTPS)
+3. **Repo variable** `PAGES_CNAME` = `fund.qinvesting.ai` (Settings → Secrets and variables → Actions → Variables). The next Pages build exports at the site root and writes `out/CNAME`.
+4. Re-run the **Pages** workflow.
+
+Until step 3 runs, keep using the [github.io URL](https://erboland.github.io/jev-fund/). Moving the apex off Vercel to GitHub Pages would require replacing the main `qinvesting.ai` site, not just this repo.
 
 A Node host that stays warm still runs the live 4-second tape (`npm start`). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
 
