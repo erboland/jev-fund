@@ -108,7 +108,7 @@ export function execute(
   const nav = mkt.nav;
 
   if (decision.action === "hold") {
-    return { trade: null, note: "no edge — hold", executed: false };
+    return { trade: null, note: "no edge \u2014 hold", executed: false };
   }
 
   if (decision.action === "buy") {
@@ -116,7 +116,7 @@ export function execute(
     const budget = Math.min(state.cash * 0.98, nav * BUY_WEIGHT, room);
     const shares = Math.floor((budget / price) * 100) / 100;
     if (shares * price < 25) {
-      return { trade: null, note: "size too small — hold", executed: false };
+      return { trade: null, note: "size too small \u2014 hold", executed: false };
     }
     const trade: Trade = {
       id: state.nextTradeId++,
@@ -141,7 +141,7 @@ export function execute(
   const shares =
     Math.ceil(mkt.positionShares * fraction * 100) / 100 || mkt.positionShares;
   if (shares <= 0) {
-    return { trade: null, note: "flat — cannot sell", executed: false };
+    return { trade: null, note: "flat \u2014 cannot sell", executed: false };
   }
   const trade: Trade = {
     id: state.nextTradeId++,
@@ -226,27 +226,27 @@ export async function stepEngineAsync(
   const prev = { ...state.prices };
   const mkt = advanceMarket(state, prices, ts);
   const flat = !quotesChanged(prev, state.prices, mkt.ticker);
-  // History is the mock. The first live tick asks Jev even if the print is
-  // unchanged (after hours), then later flat ticks hold without another call.
-  const needsJev =
-    jevConfigured() &&
-    state.modelName !== "jev" &&
-    state.modelName !== "mock (jev failed)";
-  if (flat && !needsJev) {
-    finishTick(
-      state,
-      mkt,
-      {
-        action: "hold",
-        probabilities: { buy: 0.1, sell: 0.1, hold: 0.8 },
-        latencyMs: 4,
-        model: state.modelName,
-      },
-      "last print unchanged"
-    );
+  if (!jevConfigured()) {
+    if (flat) {
+      finishTick(
+        state,
+        mkt,
+        {
+          action: "hold",
+          probabilities: { buy: 0.1, sell: 0.1, hold: 0.8 },
+          latencyMs: 4,
+          model: state.modelName,
+        },
+        "last print unchanged"
+      );
+      return state;
+    }
+    finishTick(state, mkt, await decide(mkt, state.tick));
     return state;
   }
-  finishTick(state, mkt, await decide(mkt, state.tick));
+  const decision = await decide(mkt, state.tick);
+  const skipFill = flat && decision.action !== "hold";
+  finishTick(state, mkt, decision, flat ? "print unchanged" : undefined, skipFill);
   return state;
 }
 
@@ -268,9 +268,12 @@ function finishTick(
   state: EngineState,
   mkt: MarketState,
   decision: Decision,
-  forcedNote?: string
+  forcedNote?: string,
+  skipFill = false
 ) {
-  const { note, executed } = execute(state, mkt.ticker, decision);
+  const { note, executed } = skipFill
+    ? { note: "print unchanged", executed: false }
+    : execute(state, mkt.ticker, decision);
 
   const event: DecisionEvent = {
     tick: state.tick,
