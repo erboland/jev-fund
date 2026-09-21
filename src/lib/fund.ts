@@ -1,5 +1,6 @@
-import { pickTicker, returns, stepPrices, initialPrices } from "./market";
+import { pickTicker, returns } from "./market";
 import { decide, mockDecide } from "./model";
+import { quotesChanged, type Session } from "./quotes";
 import type {
   Decision,
   DecisionEvent,
@@ -12,10 +13,8 @@ import type {
 } from "./types";
 import {
   BUY_WEIGHT,
-  HISTORY_TICKS,
   MAX_WEIGHT,
   STARTING_CASH,
-  TICK_MS,
   UNIVERSE,
   nameOf,
 } from "./universe";
@@ -168,51 +167,102 @@ export function execute(
   return { trade, note, executed: true };
 }
 
-export function createEngine(now = Date.now()): EngineState {
-  const prices = initialPrices();
+export function createEngine(
+  prices: Record<string, number>,
+  ts: number,
+  dataSource: EngineState["dataSource"] = "yahoo"
+): EngineState {
   return {
     tick: 0,
-    ts: now - HISTORY_TICKS * TICK_MS,
+    ts,
     cash: STARTING_CASH,
     positions: {},
-    prices,
+    prices: { ...prices },
     series: Object.fromEntries(UNIVERSE.map((n) => [n.ticker, [prices[n.ticker]]])),
-    factor: 0,
     trades: [],
     decisions: [],
-    equity: [],
+    equity: [{ tick: 0, ts, nav: STARTING_CASH }],
     realizedPnl: 0,
     peakNav: STARTING_CASH,
     maxDrawdown: 0,
     modelName: "mock",
     nextTradeId: 1,
+    dataSource,
+    quoteTs: ts,
   };
 }
 
-export function stepEngine(state: EngineState, decisionFn = mockDecide) {
-  const mkt = advanceMarket(state);
+export function stepEngine(
+  state: EngineState,
+  prices: Record<string, number>,
+  ts: number,
+  decisionFn = mockDecide
+) {
+  const prev = { ...state.prices };
+  const mkt = advanceMarket(state, prices, ts);
+  if (!quotesChanged(prev, state.prices, mkt.ticker)) {
+    finishTick(
+      state,
+      mkt,
+      {
+        action: "hold",
+        probabilities: { buy: 0.1, sell: 0.1, hold: 0.8 },
+        latencyMs: 4,
+        model: decisionFn(mkt, state.tick).model,
+      },
+      "last print unchanged"
+    );
+    return state;
+  }
   finishTick(state, mkt, decisionFn(mkt, state.tick));
   return state;
 }
 
-export async function stepEngineAsync(state: EngineState) {
-  const mkt = advanceMarket(state);
+export async function stepEngineAsync(
+  state: EngineState,
+  prices: Record<string, number>,
+  ts: number
+) {
+  const prev = { ...state.prices };
+  const mkt = advanceMarket(state, prices, ts);
+  if (!quotesChanged(prev, state.prices, mkt.ticker)) {
+    finishTick(
+      state,
+      mkt,
+      {
+        action: "hold",
+        probabilities: { buy: 0.1, sell: 0.1, hold: 0.8 },
+        latencyMs: 4,
+        model: state.modelName,
+      },
+      "last print unchanged"
+    );
+    return state;
+  }
   finishTick(state, mkt, await decide(mkt, state.tick));
   return state;
 }
 
-function advanceMarket(state: EngineState): MarketState {
+function advanceMarket(
+  state: EngineState,
+  prices: Record<string, number>,
+  ts: number
+): MarketState {
   state.tick += 1;
-  state.ts += TICK_MS;
-  const stepped = stepPrices(state.prices, state.factor, state.tick);
-  state.prices = stepped.prices;
-  state.factor = stepped.factor;
+  state.ts = ts;
+  state.quoteTs = ts;
+  state.prices = { ...state.prices, ...prices };
   pushHistory(state);
   const name = pickTicker(state.tick, UNIVERSE);
   return marketFor(state, name.ticker);
 }
 
-function finishTick(state: EngineState, mkt: MarketState, decision: Decision) {
+function finishTick(
+  state: EngineState,
+  mkt: MarketState,
+  decision: Decision,
+  forcedNote?: string
+) {
   const { note, executed } = execute(state, mkt.ticker, decision);
 
   const event: DecisionEvent = {
@@ -226,7 +276,7 @@ function finishTick(state: EngineState, mkt: MarketState, decision: Decision) {
     late: false,
     executed,
     price: state.prices[mkt.ticker],
-    note,
+    note: forcedNote ?? note,
     model: decision.model,
   };
   state.decisions.push(event);
@@ -296,6 +346,8 @@ export function snapshotOf(state: EngineState): FundSnapshot {
     model: state.modelName,
     jevConfigured: false,
     dryRun: true,
+    dataSource: state.dataSource,
+    quoteTs: state.quoteTs,
     tick: state.tick,
     ts: state.ts,
     cash: state.cash,
@@ -314,12 +366,17 @@ export function snapshotOf(state: EngineState): FundSnapshot {
   };
 }
 
-export function simulateHistory(now = Date.now()): EngineState {
-  const state = createEngine(now);
-  for (let i = 0; i < HISTORY_TICKS; i++) {
-    stepEngine(state);
+export function simulateHistory(
+  sessions: Session[],
+  dataSource: EngineState["dataSource"] = "yahoo"
+): EngineState {
+  if (sessions.length < 2) {
+    throw new Error("Need at least two market sessions to build a book");
   }
-  state.ts = now;
+  const state = createEngine(sessions[0].prices, sessions[0].ts, dataSource);
+  for (let i = 1; i < sessions.length; i++) {
+    stepEngine(state, sessions[i].prices, sessions[i].ts);
+  }
   return state;
 }
 
