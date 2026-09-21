@@ -24,7 +24,6 @@
   <a href="#demo">Demo</a> ·
   <a href="#installation">Installation</a> ·
   <a href="#framework">Framework</a> ·
-  <a href="#related-work">Related work</a> ·
   <a href="#citation">Citation</a>
 </p>
 
@@ -32,7 +31,7 @@
 
 # jev-fund: Open-Source Paper Hedge Fund
 
-A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.com/kb/guide/typesafe-jev-and-ai-sdk) (TypeSafe System One, via the Vercel AI SDK) answers buy / sell / hold on a $100k long-only book. The public page is a live tape — the same product pattern as [jev-trader](https://jev-trader.vercel.app/), for a fund instead of a Monad market-maker.
+A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.com/kb/guide/typesafe-jev-and-ai-sdk) (TypeSafe System One, via the Vercel AI SDK) answers buy / sell / hold on a $100k long-only book. The public page is the tape: holdings, buys, and losses.
 
 > [!IMPORTANT]
 > This project is for **educational and research purposes only**. It does not place live orders. It is not investment advice. Read [DISCLAIMER.md](DISCLAIMER.md).
@@ -68,7 +67,7 @@ Do not connect a brokerage, wallet, or private key to this repository.
 ## Demo
 
 <p align="center">
-  <img src="docs/assets/dashboard.svg" alt="jev-fund dashboard: NAV, equity curve, holdings, and realized losses tape" width="100%" />
+  <img src="docs/assets/demo.gif" alt="jev-fund tape: NAV, holdings, and the live decision" width="100%" />
 </p>
 
 | | |
@@ -190,7 +189,7 @@ src/lib/model.ts      mock + Jev (`experimental_evaluate`)
 src/lib/runtime.ts    in-memory live loop
 src/app/api/fund    snapshot JSON
 src/components/       dashboard
-docs/assets/          logo, schema, README screenshot
+docs/assets/          logo, schema, demo recording
 docs/launch/          X, Hacker News, Reddit copy
 DISCLAIMER.md         research-toy terms
 CHANGELOG.md          release notes
@@ -198,19 +197,7 @@ ROADMAP.md            what this desk will and will not do
 CITATION.cff          GitHub citation file
 ```
 
-## Related work
-
-Educational AI / quant open source this repo sits next to (**not affiliated**):
-
-| Project | Why look at it |
-| --- | --- |
-| [virattt/ai-hedge-fund](https://github.com/virattt/ai-hedge-fund) | Multi-agent AI fund (CLI). Jev is now a supported model. |
-| [jarrodwatts/jev-trader](https://github.com/jarrodwatts/jev-trader) | Live public tape; one Jev decision per Monad block. |
-| [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) | LLM trading-firm agents + paper. |
-| [microsoft/qlib](https://github.com/microsoft/qlib) | AI-oriented quant investment platform. |
-| [AI4Finance-Foundation/FinRL](https://github.com/AI4Finance-Foundation/FinRL) | Financial reinforcement learning research stack. |
-
-**jev-fund** is the *watchable paper book*: a browser, a blotter, and honest losses. It is not a backtester, not a broker, and not QInvesting's production engine.
+**jev-fund** is a watchable paper book: a browser, a blotter, and honest losses. It is not a broker, and not the QInvesting production engine.
 
 Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@QinvestingAI**](https://x.com/QinvestingAI).
 
@@ -234,7 +221,7 @@ If this tape is useful in a write-up, please cite the repository:
 
 ```bibtex
 @software{karshyga2026jevfund,
-  author  = {Karshyga, Yerbol},
+  author  = {jev-fund contributors},
   title   = {jev-fund: an open-source paper hedge fund},
   year    = {2026},
   url     = {https://github.com/erboland/jev-fund},
@@ -250,6 +237,6 @@ Also see [CITATION.cff](CITATION.cff).
 
 ## License
 
-[MIT](LICENSE). See [NOTICE](NOTICE). Not affiliated with TypeSafe, Vercel, or the authors of jev-trader / ai-hedge-fund / TradingAgents / Qlib beyond using public APIs and the same research pattern.
+[MIT](LICENSE). See [NOTICE](NOTICE). Not affiliated with TypeSafe or Vercel.
 
 **Disclaimer:** we are sharing this code for academic and demonstration purposes under the MIT license. Nothing herein is financial advice or a recommendation to trade real money.
