@@ -9,9 +9,9 @@ export const SITE = {
   qinvestingLabel: "qinvesting.ai",
   /** GitHub Pages project URL (always /jev-fund on github.io). */
   pagesUrl: "https://erboland.github.io/jev-fund/",
-  /** Custom domain when DNS points fund → erboland.github.io (see README). */
-  customDomain: "fund.qinvesting.ai",
-  customDomainUrl: "https://fund.qinvesting.ai/",
+  /** Custom domain when DNS points jev → erboland.github.io (see README). */
+  customDomain: "jev.qinvesting.ai",
+  customDomainUrl: "https://jev.qinvesting.ai/",
   githubUserUrl: "https://github.com/erboland",
   githubUser: "erboland",
   githubRepo: "jev-fund",

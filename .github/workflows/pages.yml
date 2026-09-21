@@ -51,8 +51,8 @@ jobs:
         run: npm run build:pages
         env:
           MODEL: jev
-          # Set to fund.qinvesting.ai after DNS CNAME fund → erboland.github.io (see README).
-          PAGES_CNAME: ${{ vars.PAGES_CNAME }}
+          # Custom domain → site root. Override with repo variable PAGES_CNAME if needed.
+          PAGES_CNAME: ${{ vars.PAGES_CNAME || 'jev.qinvesting.ai' }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:

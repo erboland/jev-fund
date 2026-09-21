@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, renameSync, writeFileSync } from "node:fs";
+import { SITE } from "../src/lib/site";
 
 const api = "src/app/api";
 const parked = "src/app/_api_parked";
@@ -12,7 +13,7 @@ if (existsSync(parked)) {
 renameSync(api, parked);
 
 /** Custom domain serves the export at the site root; github.io keeps /jev-fund. */
-const pagesCname = process.env.PAGES_CNAME?.trim() || "";
+const pagesCname = process.env.PAGES_CNAME?.trim() || SITE.customDomain;
 const env = {
   ...process.env,
   GITHUB_PAGES: "1",
