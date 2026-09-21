@@ -41,6 +41,7 @@ A proof of concept for an AI-powered **paper** hedge fund. [Jev](https://vercel.
 
 ## News
 
+- **[2026-09] v0.1.2** — GitHub Pages serves a static Yahoo-marked book. See [the site](https://erboland.github.io/jev-fund/).
 - **[2026-09] v0.1.1** — Paper book marks to **real Yahoo Finance** daily history and last print. Still paper fills only.
 - **[2026-09] v0.1.0** — Public paper book: holdings, buys, realized losses, Jev or mock, MIT + citation. See [CHANGELOG.md](CHANGELOG.md).
 - **[2026-09] Roadmap** — Persistence. See [ROADMAP.md](ROADMAP.md).
@@ -73,6 +74,7 @@ Do not connect a brokerage, wallet, or private key to this repository.
 | | |
 | --- | --- |
 | Local | `npm run dev` → [http://127.0.0.1:43147](http://127.0.0.1:43147) |
+| GitHub Pages | [erboland.github.io/jev-fund](https://erboland.github.io/jev-fund/) |
 | Dashboard | Holdings, buys, realized **losses**, equity curve, this-tick probabilities |
 | Default model | Deterministic **mock** (no API key) on **real Yahoo prices** |
 | Optional model | `MODEL=jev` via Vercel AI Gateway / TypeSafe |
@@ -88,7 +90,9 @@ What you are looking at:
 | Holdings | Open lines, weight, unrealized P&L |
 | Tape → Losses / Buys | Realized losing sells, and the buy blotter |
 
-Every ~4 seconds the engine looks at one name in a 10-ticker universe, sizes a paper order, and prints the tape.
+Every ~4 seconds the local engine looks at one name in a 10-ticker universe, sizes a paper order, and prints the tape.
+
+GitHub Pages is a static export of that book. Actions rebuilds it on every push to `main` and hourly, marking the paper book to Yahoo at build time. Set the `AI_GATEWAY_API_KEY` Actions secret to let that build ask Jev once; otherwise the published book uses the keyless mock. The 4-second tape, including live Jev, stays on `npm run dev`.
 
 ## Installation
 
@@ -212,7 +216,9 @@ Built as an open artifact of [QInvesting](https://qinvesting.ai). Follow [**@Qin
 
 ## Deploy
 
-Any Node host that can keep a process warm (so the in-memory book keeps ticking). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
+[GitHub Pages](https://erboland.github.io/jev-fund/) publishes the static book from `.github/workflows/pages.yml` on every push to `main` and hourly. In the repo settings, set Pages source to **GitHub Actions**.
+
+A Node host that stays warm still runs the live 4-second tape (`npm start`). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
 
 ## Contributing
 
