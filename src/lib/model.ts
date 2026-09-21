@@ -113,7 +113,10 @@ export async function jevDecide(state: MarketState): Promise<Decision> {
 export function redact(message: string) {
   return message
     .replace(/vck_[A-Za-z0-9_-]+/g, "[redacted]")
+    .replace(/vcp_[A-Za-z0-9_-]+/g, "[redacted]")
     .replace(/\bsk-[A-Za-z0-9_-]+/g, "[redacted]")
+    .replace(/\bgh[pousr]_[A-Za-z0-9_]+/g, "[redacted]")
+    .replace(/\bgithub_pat_[A-Za-z0-9_]+/g, "[redacted]")
     .replace(/Bearer\s+\S+/gi, "Bearer [redacted]");
 }
 

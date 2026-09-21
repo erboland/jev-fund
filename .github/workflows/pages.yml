@@ -26,13 +26,13 @@ jobs:
         with:
           ref: main
       - name: Write the demo recording
-        if: hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64') != ''
+        if: hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64*') != ''
         run: |
           set -eu
-          base64 -d docs/assets/demo.gif.b64 > docs/assets/demo.gif
+          cat $(find docs/assets -name 'demo.gif.b64*' | sort) | base64 -d > docs/assets/demo.gif
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git rm -f docs/assets/demo.gif.b64
+          git rm -f docs/assets/demo.gif.b64*
           git add docs/assets/demo.gif
           git commit -m "Add the demo recording"
           git push origin HEAD:main
@@ -64,12 +64,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Enable GitHub Pages
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -eu
           gh api --method POST "/repos/${{ github.repository }}/pages" -f build_type=workflow \
-            || gh api --method PUT "/repos/${{ github.repository }}/pages" -f build_type=workflow
+            || gh api --method PUT "/repos/${{ github.repository }}/pages" -f build_type=workflow \
+            || true
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
