@@ -9,12 +9,17 @@ async function main() {
   const state = simulateHistory(sessions, "yahoo");
   const live = await loadLiveQuotes();
   await stepEngineAsync(state, live.prices, live.quoteTs);
+  const configured = jevConfigured();
   const snap = snapshotOf(state);
-  snap.jevConfigured = jevConfigured();
+  if (!configured) {
+    console.warn(
+      "jev not configured: set MODEL=jev and AI_GATEWAY_API_KEY (or TYPESAFE_AI_API_KEY) for live Jev"
+    );
+  }
   mkdirSync("public", { recursive: true });
   writeFileSync("public/book.json", JSON.stringify(snap));
   console.log(
-    `wrote public/book.json nav=${snap.nav.toFixed(2)} model=${snap.model} tick=${snap.tick}`
+    `wrote public/book.json nav=${snap.nav.toFixed(2)} model=${snap.model} jevConfigured=${snap.jevConfigured} tick=${snap.tick}`
   );
 }
 
