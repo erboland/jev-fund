@@ -26,7 +26,7 @@ jobs:
         with:
           ref: main
       - name: Write the demo recording
-        if: hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.b64*') != ''
+        if: hashFiles('docs/assets/demo.gif') == '' && hashFiles('docs/assets/demo.gif.ready') != ''
         run: |
           set -eu
           cat $(find docs/assets -name 'demo.gif.b64*' | sort) | base64 -d > docs/assets/demo.gif
