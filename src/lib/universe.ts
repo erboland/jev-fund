@@ -3,6 +3,8 @@ import type { Name } from "./types";
 export const STARTING_CASH = 100_000;
 export const HISTORY_TICKS = 180;
 export const TICK_MS = 4_000;
+/** How many past sessions to scrub through when the page opens. */
+export const PLAYBACK_FRAMES = 28;
 export const BUY_WEIGHT = 0.08;
 export const MAX_WEIGHT = 0.22;
 

@@ -90,7 +90,7 @@ What you are looking at:
 | Holdings | Open lines, weight, unrealized P&L |
 | Tape → Losses / Buys | Realized losing sells, and the buy blotter |
 
-Every ~4 seconds the local engine looks at one name in a 10-ticker universe, sizes a paper order, and prints the tape.
+On open, the last sessions replay in a couple of seconds so the tape, NAV, and this-tick decision actually move. Add `?tape=fast` or `?tape=demo` for a quicker pass while screen-recording. After replay, the local engine checks one name about every 4 seconds.
 
 GitHub Pages is a static export of that book. Actions rebuilds it on every push to `main` and hourly, marking the paper book to Yahoo at build time. Set the `AI_GATEWAY_API_KEY` Actions secret to let that build ask Jev once; otherwise the published book uses the keyless mock. The 4-second tape, including live Jev, stays on `npm run dev`.
 
@@ -218,6 +218,17 @@ The apex domain [qinvesting.ai](https://qinvesting.ai) already points at Vercel,
 Until DNS and Pages agree, keep using the [github.io URL](https://erboland.github.io/jev-fund/). Moving the apex off Vercel to GitHub Pages would require replacing the main `qinvesting.ai` site, not just this repo.
 
 A Node host that stays warm still runs the live 4-second tape (`npm start`). On Vercel the book rebuilds on cold start from Yahoo daily history, then continues from the latest print per isolate.
+
+### Site opens (not shown on the page)
+
+Visits are recorded silently on the Railway host. Check counts any time:
+
+```bash
+curl https://jev.qinvesting.ai/api/views
+# {"opens":123,"visitors":87}
+```
+
+`opens` = page loads (one per browser session). `visitors` = unique browsers.
 
 ## Contributing
 

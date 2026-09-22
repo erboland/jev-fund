@@ -79,6 +79,21 @@ export interface FundStats {
   grossExposure: number;
 }
 
+/** One session of the book, slim enough to replay on screen. */
+export interface PlaybackFrame {
+  tick: number;
+  ts: number;
+  cash: number;
+  nav: number;
+  pnl: number;
+  pnlPct: number;
+  realizedPnl: number;
+  unrealizedPnl: number;
+  maxDrawdown: number;
+  holdings: Holding[];
+  latestDecision: DecisionEvent | null;
+}
+
 export interface EngineState {
   tick: number;
   ts: number;
@@ -119,6 +134,8 @@ export interface FundSnapshot {
   equity: EquityPoint[];
   latestDecision: DecisionEvent | null;
   stats: FundStats;
+  /** Recent sessions, oldest first. The page replays these so a recording moves. */
+  playback?: PlaybackFrame[];
 }
 
 export interface Decision {

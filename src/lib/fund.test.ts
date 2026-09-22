@@ -3,8 +3,10 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
-import { simulateHistory, snapshotOf } from "./fund";
+import { playbackFrameOf, simulateHistory, snapshotOf } from "./fund";
+import { projectSnapshot, selectTape } from "./playback";
 import { alignSessions, sessionsFromFixture } from "./quotes";
+import { PLAYBACK_FRAMES } from "./universe";
 
 const fixture = JSON.parse(
   readFileSync(join(dirname(fileURLToPath(import.meta.url)), "quotes.fixture.json"), "utf8")
@@ -26,6 +28,24 @@ describe("paper fund on real Yahoo sessions", () => {
     const buys = snap.trades.filter((t) => t.side === "buy");
     assert.ok(buys.length >= 5, "expected a buy blotter");
     assert.ok(buys.every((t) => t.price > 0));
+  });
+
+  it("can replay a window where the book actually changes", () => {
+    const frames = [];
+    simulateHistory(sessions, "fixture", (state) => {
+      frames.push(playbackFrameOf(state));
+    });
+    const tape = selectTape(frames, PLAYBACK_FRAMES);
+    assert.equal(tape.length, PLAYBACK_FRAMES);
+    assert.ok(tape.some((frame) => frame.latestDecision?.executed));
+    const full = snapshotOf(simulateHistory(sessions, "fixture"));
+    full.playback = tape;
+    const mid = projectSnapshot(full, tape[8]);
+    assert.equal(mid.tick, tape[8].tick);
+    assert.equal(mid.nav, tape[8].nav);
+    assert.ok(mid.equity.length >= 2);
+    assert.ok(mid.equity.length < full.equity.length);
+    assert.ok(mid.holdings.length >= 1);
   });
 
   it("realizes losses as well as wins", () => {

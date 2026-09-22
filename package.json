@@ -31,7 +31,8 @@
     "build:pages": "tsx scripts/export-pages.ts",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint",
-    "test": "tsx --test src/lib/*.test.ts"
+    "test": "tsx --test src/lib/*.test.ts",
+    "record:demo": "tsx scripts/record-demo.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
@@ -52,6 +53,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "playwright": "^1.63.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"

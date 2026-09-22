@@ -9,6 +9,7 @@ import type {
   FundStats,
   Holding,
   MarketState,
+  PlaybackFrame,
   Trade,
 } from "./types";
 import {
@@ -348,6 +349,31 @@ export function statsOf(state: EngineState): FundStats {
   };
 }
 
+export function playbackFrameOf(state: EngineState): PlaybackFrame {
+  const holdings = holdingsOf(state);
+  const nav = navOf(state);
+  const unrealizedPnl = holdings.reduce((s, h) => s + h.unrealizedPnl, 0);
+  const pnl = nav - STARTING_CASH;
+  return {
+    tick: state.tick,
+    ts: state.ts,
+    cash: state.cash,
+    nav,
+    pnl,
+    pnlPct: pnl / STARTING_CASH,
+    realizedPnl: state.realizedPnl,
+    unrealizedPnl,
+    maxDrawdown: state.maxDrawdown,
+    holdings,
+    latestDecision: state.decisions.at(-1)
+      ? {
+          ...state.decisions.at(-1)!,
+          probabilities: { ...state.decisions.at(-1)!.probabilities },
+        }
+      : null,
+  };
+}
+
 export function snapshotOf(state: EngineState): FundSnapshot {
   const holdings = holdingsOf(state);
   const nav = navOf(state);
@@ -380,14 +406,17 @@ export function snapshotOf(state: EngineState): FundSnapshot {
 
 export function simulateHistory(
   sessions: Session[],
-  dataSource: EngineState["dataSource"] = "yahoo"
+  dataSource: EngineState["dataSource"] = "yahoo",
+  onStep?: (state: EngineState) => void
 ): EngineState {
   if (sessions.length < 2) {
     throw new Error("Need at least two market sessions to build a book");
   }
   const state = createEngine(sessions[0].prices, sessions[0].ts, dataSource);
+  onStep?.(state);
   for (let i = 1; i < sessions.length; i++) {
     stepEngine(state, sessions[i].prices, sessions[i].ts);
+    onStep?.(state);
   }
   return state;
 }
