@@ -11,7 +11,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:43147",
 ]);
 
-function corsHeaders(origin: string | null) {
+function corsHeaders(origin: string | null): Record<string, string> {
   const allowed =
     origin && ALLOWED_ORIGINS.has(origin.replace(/\/$/, "")) ? origin : null;
   if (!allowed) return {};

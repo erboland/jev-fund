@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { playbackFrameOf, simulateHistory, snapshotOf } from "./fund";
 import { projectSnapshot, selectTape } from "./playback";
 import { alignSessions, sessionsFromFixture } from "./quotes";
+import type { PlaybackFrame } from "./types";
 import { PLAYBACK_FRAMES } from "./universe";
 
 const fixture = JSON.parse(
@@ -31,7 +32,7 @@ describe("paper fund on real Yahoo sessions", () => {
   });
 
   it("can replay a window where the book actually changes", () => {
-    const frames = [];
+    const frames: PlaybackFrame[] = [];
     simulateHistory(sessions, "fixture", (state) => {
       frames.push(playbackFrameOf(state));
     });
