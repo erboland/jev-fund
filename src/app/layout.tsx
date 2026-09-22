@@ -14,8 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.customDomainUrl),
   title: `${SITE.name} — ${SITE.tagline}`,
   description: SITE.description,
+  openGraph: {
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    siteName: SITE.name,
+    type: "website",
+    url: SITE.customDomainUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    creator: SITE.xHandle,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
