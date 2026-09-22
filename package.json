@@ -29,7 +29,7 @@
     "dev": "next dev --port 43147 --hostname 127.0.0.1",
     "build": "next build",
     "build:pages": "tsx scripts/export-pages.ts",
-    "start": "next start --port 43147 --hostname 127.0.0.1",
+    "start": "next start --hostname 0.0.0.0",
     "lint": "eslint",
     "test": "tsx --test src/lib/*.test.ts"
   },
