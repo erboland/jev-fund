@@ -155,7 +155,7 @@ flowchart LR
 | --- | --- |
 | **Market** | Yahoo Finance daily closes, then last print (delayed) |
 | **Jev / mock** | Scores one ticker per tick: buy, sell, or hold |
-| **Paper book** | Clip size ~8% of NAV, cap ~22% per name, cash long-only |
+| **Paper book** | Clip size ~16% of NAV, cap ~32% per name, cash long-only |
 | **Tape** | Holdings, buy blotter, and realized **losses** in public |
 
 1. Yahoo daily history is aligned across the 10-name universe.

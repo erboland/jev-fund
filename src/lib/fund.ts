@@ -138,7 +138,7 @@ export function execute(
     return { trade, note: `bought ${shares} ${ticker}`, executed: true };
   }
 
-  const fraction = decision.probabilities.sell > 0.62 ? 1 : 0.5;
+  const fraction = decision.probabilities.sell > 0.72 ? 1 : 0.35;
   const shares =
     Math.ceil(mkt.positionShares * fraction * 100) / 100 || mkt.positionShares;
   if (shares <= 0) {

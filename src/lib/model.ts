@@ -26,18 +26,26 @@ export function argmax(p: Probabilities): Action {
   return "hold";
 }
 
-/** Momentum + inventory mock. Stand-in for Jev so the demo runs with no key. */
+/** Momentum mock that deploys cash. Stand-in for Jev so the demo runs with no key. */
 export function mockDecide(state: MarketState, tick: number): Decision {
   const t0 = performance.now();
   const rand = mulberry32(hashSeed(tick, state.ticker.length * 17, Math.round(state.price * 100)));
-  const noise = (rand() - 0.5) * 1.4;
-  const mom = state.ret5 * 8 + state.ret1 * 12;
-  const meanRev = -state.ret20 * 3;
-  const inventory = state.positionWeight > 0.16 ? 1.2 : state.positionWeight < 0.02 ? -0.4 : 0;
-  const buyLogit = mom + meanRev + noise - inventory + (state.allowedBuy ? 0 : -8);
+  const noise = (rand() - 0.5) * 1.1;
+  const mom = state.ret5 * 10 + state.ret1 * 14;
+  const cashFrac = state.nav > 0 ? state.cash / state.nav : 1;
+  // Keep adding until the line is large. Idle cash is a reason to buy, not to wait.
+  const inventory =
+    state.positionWeight > 0.26 ? 1.6 : state.positionWeight < 0.08 ? -0.55 : -0.15;
+  const deploy = cashFrac > 0.5 ? 0.55 : cashFrac > 0.25 ? 0.2 : 0;
+  const trend = mom > 0 ? 0.35 : mom < -0.01 ? -0.8 : 0;
+  const buyLogit = mom * 1.2 + noise - inventory + deploy + trend + (state.allowedBuy ? 0.15 : -8);
+  // Sell into weakness. Do not mean-revert winners back to cash.
   const sellLogit =
-    -mom * 0.8 + state.ret20 * 2 + (rand() - 0.4) + (state.positionShares > 0 ? 0.6 : -6);
-  const holdLogit = 0.35 + (Math.abs(mom) < 0.004 ? 0.8 : 0);
+    -mom * 1.15 +
+    (state.ret5 < -0.012 ? 0.9 : -0.55) +
+    (rand() - 0.62) +
+    (state.positionShares > 0 ? 0 : -6);
+  const holdLogit = -0.2 + (Math.abs(mom) < 0.0015 ? 0.2 : 0);
   const probabilities = softmax3(buyLogit, sellLogit, holdLogit);
   let action = argmax(probabilities);
   if (action === "buy" && !state.allowedBuy) action = "hold";
@@ -75,14 +83,14 @@ export async function jevDecide(state: MarketState): Promise<Decision> {
         instructions: {
           question:
             "For this ticker on a long-only paper hedge fund, should we buy, sell, or hold this tick?",
-          goal: "Grow NAV with controlled single-name risk. Do not concentrate. Selling realizes P&L, including losses.",
+          goal: "Grow NAV by putting capital to work in meaningful longs. Do not sit in cash. A single name still has a weight cap — use the room up to it.",
           constraints:
-            "If allowedBuy is false you must not buy. If allowedSell is false you must not sell. Prefer hold when the edge is thin.",
+            "If allowedBuy is false you must not buy. If allowedSell is false you must not sell. Prefer buy over hold when cash is large and the tape is not clearly down.",
         },
         criteria: {
-          buy: "Add to or open a long: expected path is up and weight room remains.",
-          sell: "Cut or exit: expected path is down, or the line is overweight, including taking a loss.",
-          hold: "No edge, or constraints block a trade.",
+          buy: "Open or add: path is flat-to-up, or the book is underinvested and this name is under its weight cap.",
+          sell: "Cut only when the path is clearly down or the line is at its weight cap, including taking a loss. Do not sell just to get flat.",
+          hold: "Already sized, or constraints block a trade.",
         },
       },
     },
